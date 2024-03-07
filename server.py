@@ -25,7 +25,7 @@ class BerkeleyServicer(berkeley_pb2_grpc.BerkeleyServicer):
         print("horário médio", averageTime)
         self.currentTime = self.currentTime + averageTime
         print("horário definitivo", self.currentTime)
-        diffTime = self.currentTime - self.clients[request.client_id]
+        diffTime = self.currentTime - request.time
         message = f"o horário é: {self.currentTime}, altere {diffTime} no seu relógio"
         for client in self.clients:
             self.clients[client] = self.currentTime
