@@ -14,22 +14,22 @@ class BerkeleyStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Connect = channel.unary_unary(
-                '/Berkeley/Connect',
-                request_serializer=berkeley__pb2.ConnectionRequest.SerializeToString,
-                response_deserializer=berkeley__pb2.ConnectionResponse.FromString,
+        self.GetTime = channel.unary_unary(
+                '/Berkeley/GetTime',
+                request_serializer=berkeley__pb2.TimeRequest.SerializeToString,
+                response_deserializer=berkeley__pb2.TimeResponse.FromString,
                 )
         self.SyncClocks = channel.unary_unary(
                 '/Berkeley/SyncClocks',
-                request_serializer=berkeley__pb2.TimeRequest.SerializeToString,
-                response_deserializer=berkeley__pb2.TimeResponse.FromString,
+                request_serializer=berkeley__pb2.ConnectionRequest.SerializeToString,
+                response_deserializer=berkeley__pb2.ConnectionResponse.FromString,
                 )
 
 
 class BerkeleyServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Connect(self, request, context):
+    def GetTime(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -44,15 +44,15 @@ class BerkeleyServicer(object):
 
 def add_BerkeleyServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Connect': grpc.unary_unary_rpc_method_handler(
-                    servicer.Connect,
-                    request_deserializer=berkeley__pb2.ConnectionRequest.FromString,
-                    response_serializer=berkeley__pb2.ConnectionResponse.SerializeToString,
+            'GetTime': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTime,
+                    request_deserializer=berkeley__pb2.TimeRequest.FromString,
+                    response_serializer=berkeley__pb2.TimeResponse.SerializeToString,
             ),
             'SyncClocks': grpc.unary_unary_rpc_method_handler(
                     servicer.SyncClocks,
-                    request_deserializer=berkeley__pb2.TimeRequest.FromString,
-                    response_serializer=berkeley__pb2.TimeResponse.SerializeToString,
+                    request_deserializer=berkeley__pb2.ConnectionRequest.FromString,
+                    response_serializer=berkeley__pb2.ConnectionResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -65,7 +65,7 @@ class Berkeley(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Connect(request,
+    def GetTime(request,
             target,
             options=(),
             channel_credentials=None,
@@ -75,9 +75,9 @@ class Berkeley(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Berkeley/Connect',
-            berkeley__pb2.ConnectionRequest.SerializeToString,
-            berkeley__pb2.ConnectionResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/Berkeley/GetTime',
+            berkeley__pb2.TimeRequest.SerializeToString,
+            berkeley__pb2.TimeResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -93,7 +93,7 @@ class Berkeley(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Berkeley/SyncClocks',
-            berkeley__pb2.TimeRequest.SerializeToString,
-            berkeley__pb2.TimeResponse.FromString,
+            berkeley__pb2.ConnectionRequest.SerializeToString,
+            berkeley__pb2.ConnectionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
